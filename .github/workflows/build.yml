@@ -18,7 +18,128 @@ jobs:
           find unpacked_project \( -name "settings.gradle*" -o -name "build.gradle*" \) -exec sed -i 's|mavenCentral()|maven { url "https://googleapis.com" }|g' {} +
           find unpacked_project -name "ic_launcher.png.png" -execdir mv {} ic_launcher.png \;
           echo "PG1hbmlmZXN0IHhtbG5zOmFuZHJvaWQ9Imh0dHA6Ly9zY2hlbWFzLmFuZHJvaWQuY29tL2Fway9yZXMvYW5kcm9pZCI+PHVzZXMtcGVybWlzc2lvbiBhbmRyb2lkOm5hbWU9ImFuZHJvaWQucGVybWlzc2lvbi5JTlRFUk5FVCIvPjxhcHBsaWNhdGlvbiBhbmRyb2lkOmljb249IkBkcmF3YWJsZS9pY19sYXVuY2hlciIgYW5kcm9pZDpyb3VuZEljb249IkBkcmF3YWJsZS9pY19sYXVuY2hlciIgYW5kcm9pZDp0aGVtZT0iQHN0eWxlL0FwcFRoZW1lIiBhbmRyb2lkOmxhYmVsPSLYs9mI2LHYqSDYp9mE2YPZh9mBIiBhbmRyb2lkOnVzZXNDbGVhcnRleHRUcmFmZmljPSJmYWxzZSIgYW5kcm9pZDphbGxvd0JhY2t1cD0iZmFsc2UiIGFuZHJvaWQ6c3VwcG9ydHNSdGw9InRydWUiPjxhY3Rpdml0eSBhbmRyb2lkOm5hbWU9Ii5NYWluQWN0aXZpdHkiIGFuZHJvaWQ6ZXhwb3J0ZWQ9InRydWUiPjxpbnRlbnQtZmlsdGVyPjxhY3Rpb24gYW5kcm9pZDpuYW1lPSJhbmRyb2lkLmludGVudC5hY3Rpb24uTUFJTiIvPjxjYXRlZ29yeSBhbmRyb2lkOm5hbWU9ImFuZHJvaWQuaW50ZW50LmNhdGVnb3J5LkxBVU5DSEVSIi8+PC9pbnRlbnQtZmlsdGVyPjwvYWN0aXZpdHk+PC9hcHBsaWNhdGlvbj48L21hbmlmZXN0Pg==" | base64 -d > "$(find unpacked_project -name "AndroidManifest.xml" | head -n 1)"
-          echo "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" | base64 -d | gunzip > "$(find unpacked_project -name "index.html" | head -n 1)"
+          cat << 'EOF' > "$(find unpacked_project -name "index.html" | head -n 1)"
+          <!doctype html>
+          <html lang="ar" dir="rtl">
+          <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+          <title>سورة الكهف</title>
+          <link href="https://googleapis.com" rel="stylesheet">
+          <style>
+          :root{--bg:#f4efe4;--card:#fbf8f1;--border:#d4c3a3;--gold:#9c7a44;--ink:#111}
+          body.dark{--bg:#111614;--card:#18201d;--border:#3c3526;--gold:#c9a45c;--ink:#eee7d5}
+          *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+          html,body{margin:0;padding:0;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:'Amiri Quran','Amiri',serif}
+          body{display:flex;flex-direction:column}
+          .frame{flex:1;margin:8px 8px 4px;background:var(--card);border:1.5px solid var(--border);outline:1px solid var(--border);outline-offset:-5px;border-radius:6px;padding:12px 14px 8px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;transition:opacity .18s}
+          .hdr{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:4px;font-family:'Amiri',serif;font-size:15px;color:var(--gold);font-weight:bold}
+          .hdr-badge{border:1px solid var(--border);border-radius:12px;padding:1px 10px;background:rgba(156,122,68,.06)}
+          .banner{border:1.5px solid var(--gold);background:rgba(156,122,68,.09);border-radius:6px;padding:4px;margin:4px 0;text-align:center;font-size:20px;font-weight:bold;color:var(--gold)}
+          .bism{text-align:center;font-size:20px;margin:2px 0 4px;font-weight:bold}
+          .txt-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+          .qtxt{font-size:24px;line-height:1.68;text-align:justify;text-align-last:center;word-spacing:1px}
+          .vnum{color:var(--gold);font-family:'Amiri',serif;font-size:.86em;margin:0 2px;white-space:nowrap}
+          .ftr{border-top:1px solid var(--border);padding-top:4px;display:flex;justify-content:center;align-items:center;gap:8px;font-family:'Amiri',serif;font-size:15px;font-weight:bold;color:var(--gold)}
+          .pnum{border:1px solid var(--border);border-radius:14px;padding:0 14px;color:var(--ink);background:rgba(156,122,68,.06)}
+          .player{height:44px;padding:4px 10px;background:var(--card);border-top:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-shrink:0}
+          .player span{font:bold 11px sans-serif;color:var(--gold);white-space:nowrap}
+          audio{flex:1;height:32px}
+          .nbtn{border:1px solid var(--border);background:none;color:var(--gold);border-radius:8px;padding:3px 8px;font:13px sans-serif}
+          @media(orientation:landscape){
+            .frame{margin:3px 6px 2px;padding:6px 14px 4px}
+            .hdr,.ftr{font-size:13px;padding:2px 0}
+            .player{height:36px;padding:2px 10px}
+            audio{height:26px}
+          }
+          </style>
+          </head>
+          <body>
+          <div class="frame" id="card">
+            <div class="hdr">
+              <span class="hdr-badge" id="juzBox">الْجُزْءُ الْخَامِسَ عَشَرَ | الْحِزْبُ ٢٩</span>
+              <span class="hdr-badge">سُورَةُ الْكَهْفِ</span>
+            </div>
+            <div class="txt-wrap" id="wrap">
+              <div id="content" style="text-align:center;font:14px sans-serif">جارٍ فتح المصحف...</div>
+            </div>
+            <div class="ftr">
+              <span>۞</span>
+              <span class="pnum" id="pnum">٢٨١</span>
+              <span>۞</span>
+            </div>
+          </div>
+          <div class="player">
+            <span>ماهر المعيقلي</span>
+            <audio controls preload="none" src="https://archive.org"></audio>
+            <button class="nbtn" id="night">☾</button>
+          </div>
+          <script>
+          const content=document.getElementById('content'),wrap=document.getElementById('wrap'),pnum=document.getElementById('pnum'),juzBox=document.getElementById('juzBox'),card=document.getElementById('card');
+          let pages={},nums=[],idx=0;
+          const ar=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
+          function fitText(){
+            const q=document.getElementById('qtxt');
+            if(!q)return;
+            let s=window.innerWidth>window.innerHeight?32:27;
+            q.style.fontSize=s+'px';
+            while(wrap.scrollHeight>wrap.clientHeight && s>14){
+              s-=0.5;
+              q.style.fontSize=s+'px';
+            }
+          }
+          function show(){
+            const p=nums[idx],list=pages[p]||[];
+            if(!list.length)return;
+            pnum.textContent=ar(p);
+            const j=list.juz,h=Math.ceil(list.hizbQuarter/4);
+            juzBox.textContent=(j===16?'الْجُزْءُ السَّادِسَ عَشَرَ':'الْجُزْءُ الْخَامِسَ عَشَرَ')+' | الْحِزْبُ '+ar(h);
+            let htm='';
+            if(p===293)htm+='<div class="banner">❁ سُورَةُ الْكَهْفِ ❁</div><div class="bism">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>';
+            const v=list.map(a=>{
+              let t=a.text.trim();
+              if(a.numberInSurah===1)t=t.replace(/^بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ\s*/,'');
+              return t+' <span class="vnum">۝'+ar(a.numberInSurah)+'</span> ';
+            }).join('');
+            htm+='<div class="qtxt" id="qtxt">'+v+'</div>';
+            content.innerHTML=htm;
+            requestAnimationFrame(fitText);
+          }
+          function go(n){
+            if(n<0||n>=nums.length)return;
+            card.style.opacity='0.3';
+            setTimeout(()=>{idx=n;localStorage.setItem('k_p',nums[idx]);show();card.style.opacity='1';},120);
+          }
+          let sx=0;
+          document.body.addEventListener('touchstart',e=>{sx=e.changedTouches.screenX},{passive:true});
+          document.body.addEventListener('touchend',e=>{
+            const d=e.changedTouches.screenX-sx;
+            if(Math.abs(d)>45){if(d>0)go(idx+1);else go(idx-1);}
+          },{passive:true});
+          window.addEventListener('resize',()=>requestAnimationFrame(fitText));
+          if(localStorage.getItem('k_d')==='1')document.body.classList.add('dark');
+          document.getElementById('night').onclick=()=>{document.body.classList.toggle('dark');localStorage.setItem('k_d',document.body.classList.contains('dark')?'1':'0');};
+          async function init(){
+            try{
+              let c=localStorage.getItem('k_data');
+              if(!c){
+                const r=await fetch('https://alquran.cloud');
+                const j=await r.json();
+                c=JSON.stringify(j.data.ayahs);
+                localStorage.setItem('k_data',c);
+              }
+              JSON.parse(c).forEach(a=>{const p=a.page||293;if(!pages[p])pages[p]=[];pages[p].push(a);});
+              nums=Object.keys(pages).map(Number).sort((a,b)=>a-b);
+              const sp=parseInt(localStorage.getItem('k_p')||'293',10);
+              idx=Math.max(0,nums.indexOf(sp));
+              show();
+            }catch(e){content.textContent='يرجى الاتصال بالإنترنت مرة واحدة لتحميل المصحف';}
+          }
+          init();
+          </script>
+          </body>
+          </html>
+          EOF
           GRADLE_DIR=$(find unpacked_project -name "settings.gradle*" -exec dirname {} \; | head -n 1)
           cd "$GRADLE_DIR"
           chmod +x ./gradlew 2>/dev/null || true
