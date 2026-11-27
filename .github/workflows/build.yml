@@ -27,23 +27,210 @@ jobs:
           find unpacked_project -name "ic_launcher.png.png" -execdir mv {} ic_launcher.png \;
           MANIFEST_FILE=$(find unpacked_project -name "AndroidManifest.xml" | head -n 1)
           echo "PG1hbmlmZXN0IHhtbG5zOmFuZHJvaWQ9Imh0dHA6Ly9zY2hlbWFzLmFuZHJvaWQuY29tL2Fway9yZXMvYW5kcm9pZCI+PHVzZXMtcGVybWlzc2lvbiBhbmRyb2lkOm5hbWU9ImFuZHJvaWQucGVybWlzc2lvbi5JTlRFUk5FVCIvPjxhcHBsaWNhdGlvbiBhbmRyb2lkOmljb249IkBkcmF3YWJsZS9pY19sYXVuY2hlciIgYW5kcm9pZDpyb3VuZEljb249IkBkcmF3YWJsZS9pY19sYXVuY2hlciIgYW5kcm9pZDp0aGVtZT0iQHN0eWxlL0FwcFRoZW1lIiBhbmRyb2lkOmxhYmVsPSLYs9mI2LHYqSDYp9mE2YPZh9mBIiBhbmRyb2lkOnVzZXNDbGVhcnRleHRUcmFmZmljPSJmYWxzZSIgYW5kcm9pZDphbGxvd0JhY2t1cD0iZmFsc2UiIGFuZHJvaWQ6c3VwcG9ydHNSdGw9InRydWUiPjxhY3Rpdml0eSBhbmRyb2lkOm5hbWU9Ii5NYWluQWN0aXZpdHkiIGFuZHJvaWQ6ZXhwb3J0ZWQ9InRydWUiPjxpbnRlbnQtZmlsdGVyPjxhY3Rpb24gYW5kcm9pZDpuYW1lPSJhbmRyb2lkLmludGVudC5hY3Rpb24uTUFJTiIvPjxjYXRlZ29yeSBhbmRyb2lkOm5hbWU9ImFuZHJvaWQuaW50ZW50LmNhdGVnb3J5LkxBVU5DSEVSIi8+PC9pbnRlbnQtZmlsdGVyPjwvYWN0aXZpdHk+PC9hcHBsaWNhdGlvbj48L21hbmlmZXN0Pg==" | base64 -d > "$MANIFEST_FILE"
-
-      - name: Build APK
-        run: |
-          GRADLE_DIR=$(find unpacked_project -name "settings.gradle*" -exec dirname {} \; | head -n 1)
-          echo "Building in: $GRADLE_DIR"
-          cd "$GRADLE_DIR"
-          if [ -f "./gradlew" ]; then
-            chmod +x ./gradlew
-            ./gradlew --no-daemon assembleDebug
-          else
-            gradle --no-daemon assembleDebug
-          fi
-          mkdir -p "$GITHUB_WORKSPACE/output_apk"
-          find . -name "*.apk" -exec cp {} "$GITHUB_WORKSPACE/output_apk/" \;
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: AlKahf-debug-APK
-          path: output_apk/*.apk
+          INDEX_FILE=$(find unpacked_project -name "index.html" | head -n 1)
+          cat << 'EOF' > "$INDEX_FILE"
+          <!doctype html>
+          <html lang="ar" dir="rtl">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+            <meta name="theme-color" content="#0b3028">
+            <title>سورة الكهف - مصحف</title>
+            <link rel="preconnect" href="https://googleapis.com">
+            <link rel="preconnect" href="https://gstatic.com" crossorigin>
+            <link href="https://googleapis.com/css2?family=Amiri+Quran&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+            <style>
+              :root {
+                --green: #0b3028;
+                --green2: #17483c;
+                --gold: #b88c3e;
+                --gold-light: #e5cfa0;
+                --paper: #fcf6e5;
+                --paper-edge: #f3e7c8;
+                --ink: #1e2b24;
+                --frame-bg: #fffdf7;
+              }
+              body.dark {
+                --paper: #121c18;
+                --paper-edge: #0d1512;
+                --ink: #eee5d0;
+                --frame-bg: #182520;
+                --gold: #c9a45c;
+                --gold-light: #4a3f28;
+              }
+              * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+              body {
+                margin: 0;
+                background: var(--paper-edge);
+                color: var(--ink);
+                font-family: 'Amiri Quran', 'Amiri', serif;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                overflow-x: hidden;
+              }
+              .topbar {
+                background: linear-gradient(145deg, var(--green), var(--green2));
+                color: #fff;
+                padding: 10px 14px;
+                border-bottom: 2px solid var(--gold);
+                position: sticky;
+                top: 0;
+                z-index: 50;
+              }
+              .topbar-row {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 8px;
+                max-width: 720px;
+                margin: auto;
+              }
+              .title-area {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-family: 'Amiri', serif;
+                font-size: 18px;
+                font-weight: bold;
+              }
+              .title-area span { color: var(--gold); }
+              .tools { display: flex; gap: 5px; }
+              .tool-btn {
+                background: rgba(255, 255, 255, 0.12);
+                color: #f7eed9;
+                border: 1px solid rgba(201, 164, 92, 0.45);
+                border-radius: 8px;
+                padding: 5px 9px;
+                font-size: 13px;
+                font-family: sans-serif;
+              }
+              .audio-wrap {
+                max-width: 720px;
+                margin: 8px auto 0;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+              }
+              .reciter-badge { font: 11px sans-serif; color: #e8ddc5; white-space: nowrap; }
+              audio { width: 100%; height: 32px; border-radius: 20px; }
+              .mushaf-wrapper {
+                flex: 1;
+                width: 100%;
+                max-width: 680px;
+                margin: 10px auto 14px;
+                padding: 0 10px;
+                display: flex;
+                touch-action: pan-y;
+              }
+              .mushaf-page {
+                flex: 1;
+                background: var(--frame-bg);
+                background-image: radial-gradient(circle at center, transparent 60%, rgba(184, 140, 62, 0.06) 100%);
+                border: 2px solid var(--gold);
+                border-radius: 10px;
+                padding: 6px;
+                box-shadow: 0 6px 24px rgba(11, 48, 40, 0.14);
+                display: flex;
+                flex-direction: column;
+                transition: transform 0.22s ease, opacity 0.22s ease;
+              }
+              .mushaf-inner-border {
+                border: 1.5px solid var(--gold);
+                outline: 1px solid var(--gold-light);
+                outline-offset: -4px;
+                border-radius: 6px;
+                padding: 14px 16px 12px;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+              }
+              .page-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 1px solid var(--gold-light);
+                padding-bottom: 6px;
+                margin-bottom: 10px;
+                font-family: 'Amiri', serif;
+                font-size: 15px;
+                color: var(--gold);
+                font-weight: bold;
+              }
+              .surah-banner {
+                border: 2px solid var(--gold);
+                background: linear-gradient(90deg, rgba(184,140,62,0.12), rgba(11,48,40,0.08), rgba(184,140,62,0.12));
+                border-radius: 8px;
+                padding: 8px 12px;
+                margin-bottom: 10px;
+                text-align: center;
+                box-shadow: inset 0 0 0 2px var(--frame-bg), inset 0 0 0 3px var(--gold-light);
+              }
+              .surah-banner-title {
+                font-size: 23px;
+                font-weight: bold;
+                color: var(--green);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+              }
+              body.dark .surah-banner-title { color: var(--gold); }
+              .bismillah { text-align: center; font-size: 22px; margin: 4px 0 10px; font-weight: bold; }
+              .quran-text {
+                font-size: 24px;
+                line-height: 2.25;
+                text-align: justify;
+                text-align-last: center;
+                word-spacing: 1px;
+                flex: 1;
+              }
+              .ayah-end {
+                display: inline-block;
+                color: var(--gold);
+                font-family: 'Amiri', serif;
+                font-size: 0.88em;
+                margin: 0 3px;
+                white-space: nowrap;
+                font-weight: bold;
+              }
+              .page-footer {
+                margin-top: 12px;
+                padding-top: 6px;
+                border-top: 1px solid var(--gold-light);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                font-family: 'Amiri', serif;
+                font-size: 15px;
+                color: var(--gold);
+                font-weight: bold;
+              }
+              .page-num-box {
+                border: 1.5px solid var(--gold);
+                padding: 1px 14px;
+                border-radius: 20px;
+                background: rgba(184, 140, 62, 0.08);
+                color: var(--ink);
+              }
+              .swipe-hint {
+                font: 11px sans-serif;
+                color: #8c7b58;
+              }
+              .status-msg { text-align: center; padding: 30px 10px; font: 14px sans-serif; color: #6e756e; }
+            </style>
+          </head>
+          <body>
+            <header class="topbar">
+              <div class="topbar-row">
+                <div class="title-area"><span>۞</span> سُورَةُ الْكَهْفِ <span>۞</span></div>
+                <div class="tools">
+                  <button class="tool-btn" id="smaller">ع−</button>
+                  <button class="tool-btn" id="larger">ع+</button>
+                  <button class="tool-btn" id="night">ليلي ☾</button>
+                </div>
+              </div>
+              <div class="audio-wrap">
+                <span class="reciter-badge">ماهر المعيقلي</span>
