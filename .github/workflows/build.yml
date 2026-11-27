@@ -25,6 +25,27 @@ jobs:
           unzip -o -q *.zip -d unpacked_project
           find unpacked_project \( -name "settings.gradle*" -o -name "build.gradle*" \) -exec sed -i 's|mavenCentral()|maven { url "https://googleapis.com" }|g' {} +
           find unpacked_project -name "ic_launcher.png.png" -execdir mv {} ic_launcher.png \;
+          MANIFEST_PATH=$(find unpacked_project -name "AndroidManifest.xml" | head -n 1)
+          cat << 'EOF' > "$MANIFEST_PATH"
+          <manifest xmlns:android="http://android.com">
+              <uses-permission android:name="android.permission.INTERNET" />
+              <application
+                  android:icon="@drawable/ic_launcher"
+                  android:roundIcon="@drawable/ic_launcher"
+                  android:theme="@style/AppTheme"
+                  android:label="سورة الكهف"
+                  android:usesCleartextTraffic="false"
+                  android:allowBackup="false"
+                  android:supportsRtl="true">
+                  <activity android:name=".MainActivity" android:exported="true">
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN"/>
+                          <category android:name="android.intent.category.LAUNCHER"/>
+                      </intent-filter>
+                  </activity>
+              </application>
+          </manifest>
+          EOF
 
       - name: Build APK
         run: |
