@@ -12,17 +12,17 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Build Offline APK
+      - name: Clean and Build Offline APK
         run: |
           unzip -o -q *.zip -d unpacked_project
           find unpacked_project \( -name "settings.gradle*" -o -name "build.gradle*" \) -exec sed -i 's|mavenCentral()|maven { url "https://googleapis.com" }|g' {} +
           find unpacked_project -name "ic_launcher.png.png" -execdir mv {} ic_launcher.png \;
           echo "PG1hbmlmZXN0IHhtbG5zOmFuZHJvaWQ9Imh0dHA6Ly9zY2hlbWFzLmFuZHJvaWQuY29tL2Fway9yZXMvYW5kcm9pZCI+PHVzZXMtcGVybWlzc2lvbiBhbmRyb2lkOm5hbWU9ImFuZHJvaWQucGVybWlzc2lvbi5JTlRFUk5FVCIvPjxhcHBsaWNhdGlvbiBhbmRyb2lkOmljb249IkBkcmF3YWJsZS9pY19sYXVuY2hlciIgYW5kcm9pZDpyb3VuZEljb249IkBkcmF3YWJsZS9pY19sYXVuY2hlciIgYW5kcm9pZDp0aGVtZT0iQHN0eWxlL0FwcFRoZW1lIiBhbmRyb2lkOmxhYmVsPSLYs9mI2LHYqSDYp9mE2YPZh9mBIiBhbmRyb2lkOnVzZXNDbGVhcnRleHRUcmFmZmljPSJmYWxzZSIgYW5kcm9pZDphbGxvd0JhY2t1cD0iZmFsc2UiIGFuZHJvaWQ6c3VwcG9ydHNSdGw9InRydWUiPjxhY3Rpdml0eSBhbmRyb2lkOm5hbWU9Ii5NYWluQWN0aXZpdHkiIGFuZHJvaWQ6ZXhwb3J0ZWQ9InRydWUiPjxpbnRlbnQtZmlsdGVyPjxhY3Rpb24gYW5kcm9pZDpuYW1lPSJhbmRyb2lkLmludGVudC5hY3Rpb24uTUFJTiIvPjxjYXRlZ29yeSBhbmRyb2lkOm5hbWU9ImFuZHJvaWQuaW50ZW50LmNhdGVnb3J5LkxBVU5DSEVSIi8+PC9pbnRlbnQtZmlsdGVyPjwvYWN0aXZpdHk+PC9hcHBsaWNhdGlvbj48L21hbmlmZXN0Pg==" | base64 -d > "$(find unpacked_project -name "AndroidManifest.xml" | head -n 1)"
-          INDEX_FILE=$(find unpacked_project -name "index.html" | head -n 1)
-          ASSETS_DIR=$(dirname "$INDEX_FILE")
+          ASSETS_DIR=$(find unpacked_project -type d -path "*/src/main/assets" | head -n 1)
+          rm -rf "$ASSETS_DIR"/*
           curl -sL "https://archive.org" -o "$ASSETS_DIR/018.mp3"
           curl -s "https://alquran.cloud" > /tmp/surah.json
-          cat << 'EOF' > "$INDEX_FILE"
+          cat << 'EOF' > "$ASSETS_DIR/index.html"
           <!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>سورة الكهف</title>
           <link href="https://googleapis.com" rel="stylesheet">
           <style>
@@ -79,7 +79,7 @@ jobs:
           (function(){const raw=JSON.parse(document.getElementById('offline-data').textContent);raw.data.ayahs.forEach(a=>{const p=a.page||293;if(!pages[p])pages[p]=[];pages[p].push(a);});nums=Object.keys(pages).map(Number).sort((a,b)=>a-b);idx=Math.max(0,nums.indexOf(parseInt(localStorage.getItem('k_p')||'293',10)));show();})();
           </script></body></html>
           EOF
-          python3 -c 'h=open("'"$INDEX_FILE"'").read(); j=open("/tmp/surah.json").read(); open("'"$INDEX_FILE"'","w").write(h.replace("__SURAH_JSON__", j))'
+          python3 -c 'h=open("'"$ASSETS_DIR/index.html"'").read(); j=open("/tmp/surah.json").read(); open("'"$ASSETS_DIR/index.html"'","w").write(h.replace("__SURAH_JSON__", j))'
           GRADLE_DIR=$(find unpacked_project -name "settings.gradle*" -exec dirname {} \; | head -n 1)
           cd "$GRADLE_DIR"
           chmod +x ./gradlew 2>/dev/null || true
