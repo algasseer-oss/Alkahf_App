@@ -20,43 +20,10 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Configure Maven Mirror
-        run: |
-          mkdir -p ~/.gradle
-          cat << 'EOF' > ~/.gradle/init.gradle
-          def replaceMaven = { RepositoryHandler repos ->
-              def hasCentral = false
-              repos.removeAll { repo ->
-                  if (repo instanceof MavenArtifactRepository) {
-                      def u = repo.url.toString()
-                      if (u.contains('repo.maven.apache.org') || u.contains('repo1.maven.org')) {
-                          hasCentral = true
-                          return true
-                      }
-                  }
-                  return false
-              }
-              if (hasCentral) {
-                  repos.maven { url "https://googleapis.com" }
-              }
-          }
-
-          settingsEvaluated { settings ->
-              replaceMaven(settings.pluginManagement.repositories)
-              replaceMaven(settings.dependencyResolutionManagement.repositories)
-          }
-
-          allprojects {
-              buildscript {
-                  replaceMaven(repositories)
-              }
-          }
-          EOF
-
-      - name: Unpack project
+      - name: Unpack and patch Maven Mirror
         run: |
           unzip -o -q *.zip -d unpacked_project
-          ls -la unpacked_project
+          find unpacked_project \( -name "settings.gradle*" -o -name "build.gradle*" \) -exec sed -i 's|mavenCentral()|maven { url "https://googleapis.com" }|g' {} +
 
       - name: Build APK
         run: |
