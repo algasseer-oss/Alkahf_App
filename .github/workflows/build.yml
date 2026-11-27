@@ -24,32 +24,31 @@ jobs:
         run: |
           mkdir -p ~/.gradle
           cat << 'EOF' > ~/.gradle/init.gradle
+          def replaceMaven = { RepositoryHandler repos ->
+              def hasCentral = false
+              repos.removeAll { repo ->
+                  if (repo instanceof MavenArtifactRepository) {
+                      def u = repo.url.toString()
+                      if (u.contains('repo.maven.apache.org') || u.contains('repo1.maven.org')) {
+                          hasCentral = true
+                          return true
+                      }
+                  }
+                  return false
+              }
+              if (hasCentral) {
+                  repos.maven { url "https://googleapis.com" }
+              }
+          }
+
+          settingsEvaluated { settings ->
+              replaceMaven(settings.pluginManagement.repositories)
+              replaceMaven(settings.dependencyResolutionManagement.repositories)
+          }
+
           allprojects {
               buildscript {
-                  repositories {
-                      all { ArtifactRepository repo ->
-                          if (repo instanceof MavenArtifactRepository) {
-                              def url = repo.url.toString()
-                              if (url.startsWith('https://apache.org') || url.startsWith('https://maven.org')) {
-                                  project.logger.lifecycle "Replacing Maven Central with Google Mirror"
-                                  remove repo
-                              }
-                          }
-                      }
-                      maven { url "https://googleapis.com" }
-                  }
-              }
-              repositories {
-                  all { ArtifactRepository repo ->
-                      if (repo instanceof MavenArtifactRepository) {
-                          def url = repo.url.toString()
-                          if (url.startsWith('https://apache.org') || url.startsWith('https://maven.org')) {
-                              project.logger.lifecycle "Replacing Maven Central with Google Mirror"
-                              remove repo
-                          }
-                      }
-                  }
-                  maven { url "https://googleapis.com" }
+                  replaceMaven(repositories)
               }
           }
           EOF
