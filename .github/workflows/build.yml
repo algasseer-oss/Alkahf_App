@@ -1,11 +1,10 @@
-
 name: Build AlKahf APK
 
 on:
   workflow_dispatch:
   push:
     paths:
-      - 'AlKahfMaher_AndroidStudio_Project.zip'
+      - '*.zip'
       - '.github/workflows/build.yml'
 
 jobs:
@@ -21,27 +20,28 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install Android platform
-        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
-
       - name: Install Gradle
         run: |
-          curl -L https://services.gradle.org/distributions/gradle-8.7-bin.zip -o /tmp/gradle.zip
+          curl -L https://gradle.org -o /tmp/gradle.zip
           unzip -q /tmp/gradle.zip -d /tmp
           echo "/tmp/gradle-8.7/bin" >> "$GITHUB_PATH"
 
       - name: Unpack project
-        run: unzip -q AlKahfMaher_AndroidStudio_Project.zip -d .
+        run: |
+          unzip -o -q *.zip -d unpacked_project
+          ls -la unpacked_project
 
       - name: Build APK
-        working-directory: alkahf_app
-        run: gradle --no-daemon assembleDebug
+        run: |
+          GRADLE_DIR=$(find unpacked_project -name "settings.gradle*" -exec dirname {} \; | head -n 1)
+          echo "Building in: $GRADLE_DIR"
+          cd "$GRADLE_DIR"
+          gradle --no-daemon assembleDebug
+          mkdir -p "$GITHUB_WORKSPACE/output_apk"
+          find . -name "*.apk" -exec cp {} "$GITHUB_WORKSPACE/output_apk/" \;
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: AlKahf-debug-APK
-          path: alkahf_app/app/build/outputs/apk/debug/app-debug.apk
+          path: output_apk/*.apk
