@@ -21,20 +21,14 @@ jobs:
           curl -s "https://alquran.cloud" > /tmp/surah.json
           INDEX_FILE=$(find unpacked_project -name "index.html" | head -n 1)
           cat << 'EOF' > "$INDEX_FILE"
-          <!doctype html>
-          <html lang="ar" dir="rtl">
-          <head>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-          <title>سورة الكهف</title>
+          <!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>سورة الكهف</title>
           <link href="https://googleapis.com" rel="stylesheet">
           <style>
           :root{--bg:#f4efe4;--card:#fbf8f1;--border:#d4c3a3;--gold:#9c7a44;--ink:#111}
           body.dark{--bg:#111614;--card:#18201d;--border:#3c3526;--gold:#c9a45c;--ink:#eee7d5}
           *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-          html,body{margin:0;padding:0;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:'Amiri Quran','Amiri',serif}
-          body{display:flex;flex-direction:column}
-          .frame{flex:1;margin:8px 8px 4px;background:var(--card);border:1.5px solid var(--border);outline:1px solid var(--border);outline-offset:-5px;border-radius:6px;padding:12px 14px 8px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;transition:opacity .18s}
+          html,body{margin:0;padding:0;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:'Amiri Quran','Amiri',serif;display:flex;flex-direction:column}
+          .frame{flex:1;margin:8px 8px 4px;background:var(--card);border:1.5px solid var(--border);outline:1px solid var(--border);outline-offset:-5px;border-radius:6px;padding:10px 14px 6px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;transition:opacity .18s}
           .hdr{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:4px;font-family:'Amiri',serif;font-size:15px;color:var(--gold);font-weight:bold}
           .hdr-badge{border:1px solid var(--border);border-radius:12px;padding:1px 10px;background:rgba(156,122,68,.06)}
           .banner{border:1.5px solid var(--gold);background:rgba(156,122,68,.09);border-radius:6px;padding:4px;margin:4px 0;text-align:center;font-size:20px;font-weight:bold;color:var(--gold)}
@@ -44,114 +38,61 @@ jobs:
           .vnum{color:var(--gold);font-family:'Amiri',serif;font-size:.86em;margin:0 2px;white-space:nowrap}
           .ftr{border-top:1px solid var(--border);padding-top:4px;display:flex;justify-content:center;align-items:center;gap:8px;font-family:'Amiri',serif;font-size:15px;font-weight:bold;color:var(--gold)}
           .pnum{border:1px solid var(--border);border-radius:14px;padding:0 14px;color:var(--ink);background:rgba(156,122,68,.06)}
-          .player{height:46px;padding:4px 8px;background:var(--card);border-top:1px solid var(--border);display:flex;align-items:center;gap:6px;flex-shrink:0}
-          .player span{font:bold 11px sans-serif;color:var(--gold);white-space:nowrap}
-          audio{flex:1;height:32px;min-width:0}
-          .nbtn{border:1px solid var(--border);background:none;color:var(--gold);border-radius:8px;padding:4px 7px;font:bold 11px sans-serif;white-space:nowrap}
+          .player{height:48px;padding:4px 8px;background:var(--card);border-top:1px solid var(--border);display:flex;align-items:center;gap:6px;flex-shrink:0}
+          audio{flex:1;height:34px;min-width:120px}
+          .nbtn{flex-shrink:0;border:1.5px solid var(--gold);background:rgba(156,122,68,.12);color:var(--gold);border-radius:8px;padding:6px 10px;font:bold 12px sans-serif;white-space:nowrap}
           .nbtn.saved{background:#17483c;color:#fff;border-color:#17483c}
-          @media(orientation:landscape){
-            .frame{margin:3px 6px 2px;padding:6px 14px 4px}
-            .hdr,.ftr{font-size:13px;padding:2px 0}
-            .player{height:36px;padding:2px 8px}
-            audio{height:26px}
-          }
-          </style>
-          </head>
-          <body>
+          @media(orientation:landscape){.frame{margin:3px 6px 2px;padding:6px 14px 4px}.hdr,.ftr{font-size:13px;padding:2px 0}.player{height:38px}.nbtn{padding:4px 8px}}
+          </style></head><body>
           <div class="frame" id="card">
-            <div class="hdr">
-              <span class="hdr-badge" id="juzBox">الْجُزْءُ الْخَامِسَ عَشَرَ | الْحِزْبُ ٢٩</span>
-              <span class="hdr-badge">سُورَةُ الْكَهْفِ</span>
-            </div>
-            <div class="txt-wrap" id="wrap">
-              <div id="content"></div>
-            </div>
-            <div class="ftr">
-              <span>۞</span>
-              <span class="pnum" id="pnum">٢٩٣</span>
-              <span>۞</span>
-            </div>
+            <div class="hdr"><span class="hdr-badge" id="juzBox">الْجُزْءُ الْخَامِسَ عَشَرَ | الْحِزْبُ ٢٩</span><span class="hdr-badge">سُورَةُ الْكَهْفِ</span></div>
+            <div class="txt-wrap" id="wrap"><div id="content"></div></div>
+            <div class="ftr"><span>۞</span><span class="pnum" id="pnum">٢٩٣</span><span>۞</span></div>
           </div>
           <div class="player">
-            <span>المعيقلي</span>
+            <button class="nbtn" id="dlBtn">⬇ حفظ MP3</button>
             <audio id="aud" controls preload="none" src="https://archive.org"></audio>
-            <button class="nbtn" id="dlBtn">⬇ حفظ</button>
             <button class="nbtn" id="night">☾</button>
           </div>
           <script id="offline-data" type="application/json">__SURAH_JSON__</script>
           <script>
-          const content=document.getElementById('content'),wrap=document.getElementById('wrap'),pnum=document.getElementById('pnum'),juzBox=document.getElementById('juzBox'),card=document.getElementById('card');
-          const aud=document.getElementById('aud'),dlBtn=document.getElementById('dlBtn');
-          const MP3_URL='https://archive.org';
+          const content=document.getElementById('content'),wrap=document.getElementById('wrap'),pnum=document.getElementById('pnum'),juzBox=document.getElementById('juzBox'),card=document.getElementById('card'),aud=document.getElementById('aud'),dlBtn=document.getElementById('dlBtn');
+          const MP3='https://archive.org';
           let pages={},nums=[],idx=0;
           const ar=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
-          function fitText(){
-            const q=document.getElementById('qtxt');
-            if(!q)return;
-            let s=window.innerWidth>window.innerHeight?32:27;
-            q.style.fontSize=s+'px';
-            while(wrap.scrollHeight>wrap.clientHeight && s>14){
-              s-=0.5;
-              q.style.fontSize=s+'px';
-            }
-          }
+          function fitText(){const q=document.getElementById('qtxt');if(!q)return;let s=window.innerWidth>window.innerHeight?32:27;q.style.fontSize=s+'px';while(wrap.scrollHeight>wrap.clientHeight&&s>14){s-=0.5;q.style.fontSize=s+'px';}}
           function show(){
-            const p=nums[idx],list=pages[p]||[];
-            if(!list.length)return;
-            pnum.textContent=ar(p);
+            const p=nums[idx],list=pages[p]||[];if(!list.length)return;pnum.textContent=ar(p);
             const j=list.juz,h=Math.ceil(list.hizbQuarter/4);
             juzBox.textContent=(j===16?'الْجُزْءُ السَّادِسَ عَشَرَ':'الْجُزْءُ الْخَامِسَ عَشَرَ')+' | الْحِزْبُ '+ar(h);
-            let htm='';
-            if(p===293)htm+='<div class="banner">❁ سُورَةُ الْكَهْفِ ❁</div><div class="bism">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>';
-            const v=list.map(a=>{
-              let t=a.text.trim();
-              if(a.numberInSurah===1)t=t.replace(/^بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ\s*/,'');
-              return t+' <span class="vnum">۝'+ar(a.numberInSurah)+'</span> ';
-            }).join('');
-            htm+='<div class="qtxt" id="qtxt">'+v+'</div>';
-            content.innerHTML=htm;
-            requestAnimationFrame(fitText);
+            let htm=p===293?'<div class="banner">❁ سُورَةُ الْكَهْفِ ❁</div><div class="bism">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>':'';
+            const v=list.map(a=>{let t=a.text.trim();if(a.numberInSurah===1)t=t.replace(/^بِسۡمِ ٱللَّهِ ٱلرَّحۡمَـٰنِ ٱلرَّحِیمِ\s*/,'');return t+' <span class="vnum">۝'+ar(a.numberInSurah)+'</span> ';}).join('');
+            htm+='<div class="qtxt" id="qtxt">'+v+'</div>';content.innerHTML=htm;requestAnimationFrame(fitText);
           }
-          function go(n){
-            if(n<0||n>=nums.length)return;
-            card.style.opacity='0.3';
-            setTimeout(()=>{idx=n;localStorage.setItem('k_p',nums[idx]);show();card.style.opacity='1';},120);
-          }
-          let sx=0;
-          document.body.addEventListener('touchstart',e=>{sx=e.changedTouches.screenX},{passive:true});
-          document.body.addEventListener('touchend',e=>{
-            const d=e.changedTouches.screenX-sx;
-            if(Math.abs(d)>45){if(d>0)go(idx+1);else go(idx-1);}
-          },{passive:true});
+          function go(n){if(n<0||n>=nums.length)return;card.style.opacity='0.3';setTimeout(()=>{idx=n;localStorage.setItem('k_p',nums[idx]);show();card.style.opacity='1';},120);}
+          let sx=0;document.body.addEventListener('touchstart',e=>{sx=e.changedTouches.screenX},{passive:true});
+          document.body.addEventListener('touchend',e=>{const d=e.changedTouches.screenX-sx;if(Math.abs(d)>45){if(d>0)go(idx+1);else go(idx-1);}},{passive:true});
           window.addEventListener('resize',()=>requestAnimationFrame(fitText));
           if(localStorage.getItem('k_d')==='1')document.body.classList.add('dark');
           document.getElementById('night').onclick=()=>{document.body.classList.toggle('dark');localStorage.setItem('k_d',document.body.classList.contains('dark')?'1':'0');};
-          async function checkAudioCache(){
-            if(!('caches' in window))return;
-            const cache=await caches.open('alkahf-audio');
-            const res=await cache.match(MP3_URL);
-            if(res){
-              const blob=await res.blob();
-              aud.src=URL.createObjectURL(blob);
-              dlBtn.textContent='✓ محفوظ';
-              dlBtn.classList.add('saved');
-            }
-          }
+          async function checkCache(){try{if(!('caches' in window))return;const c=await caches.open('k-mp3'),r=await c.match(MP3);if(r){aud.src=URL.createObjectURL(await r.blob());dlBtn.textContent='✓ محفوظ';dlBtn.classList.add('saved');}}catch(e){}}
           dlBtn.onclick=async()=>{
             if(dlBtn.classList.contains('saved'))return;
             try{
-              dlBtn.textContent='جارٍ...';
-              const res=await fetch(MP3_URL);
-              if(!res.ok)throw Error();
-              const total=+res.headers.get('Content-Length')||0;
-              const reader=res.body.getReader();
-              let loaded=0,chunks=[];
-              while(true){
-                const{done,value}=await reader.read();
-                if(done)break;
-                chunks.push(value);
-                loaded+=value.length;
-                if(total)dlBtn.textContent=Math.round((loaded/total)*100)+'%';
-              }
-              const blob=new Blob(chunks,{type:'audio/mpeg'});
-              if('caches' in window){
+              dlBtn.textContent='جارٍ...';const r=await fetch(MP3);if(!r.ok)throw Error();
+              const tot=+r.headers.get('Content-Length')||0,rd=r.body.getReader();let ld=0,ch=[];
+              while(true){const{done,value}=await rd.read();if(done)break;ch.push(value);ld+=value.length;if(tot)dlBtn.textContent=Math.round(ld/tot*100)+'%';}
+              const b=new Blob(ch,{type:'audio/mpeg'});
+              if('caches' in window){const c=await caches.open('k-mp3');await c.put(MP3,new Response(b));}
+              aud.src=URL.createObjectURL(b);dlBtn.textContent='✓ محفوظ';dlBtn.classList.add('saved');
+            }catch(e){dlBtn.textContent='↻ أعد';}
+          };
+          (function(){const raw=JSON.parse(document.getElementById('offline-data').textContent);raw.data.ayahs.forEach(a=>{const p=a.page||293;if(!pages[p])pages[p]=[];pages[p].push(a);});nums=Object.keys(pages).map(Number).sort((a,b)=>a-b);idx=Math.max(0,nums.indexOf(parseInt(localStorage.getItem('k_p')||'293',10)));show();checkCache();})();
+          </script></body></html>
+          EOF
+          python3 -c 'h=open("'"$INDEX_FILE"'").read(); j=open("/tmp/surah.json").read(); open("'"$INDEX_FILE"'","w").write(h.replace("__SURAH_JSON__", j))'
+          GRADLE_DIR=$(find unpacked_project -name "settings.gradle*" -exec dirname {} \; | head -n 1)
+          cd "$GRADLE_DIR"
+          chmod +x ./gradlew 2>/dev/null || true
+          ./gradlew --no-daemon assembleDebug || gradle --no-daemon assembleDebug
+          mkdir -p "$GITHUB_WORKSPACE/output_apk"
