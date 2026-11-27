@@ -20,16 +20,9 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Install Gradle
-        run: |
-          curl -L https://gradle.org -o /tmp/gradle.zip
-          unzip -q /tmp/gradle.zip -d /tmp
-          echo "/tmp/gradle-8.7/bin" >> "$GITHUB_PATH"
-
       - name: Unpack project
         run: |
-          ls -la
-          python3 -c "import zipfile, glob; z = glob.glob('*.zip')[0]; print('Unzipping:', z); zipfile.ZipFile(z).extractall('unpacked_project')"
+          unzip -o -q *.zip -d unpacked_project
           ls -la unpacked_project
 
       - name: Build APK
@@ -37,7 +30,12 @@ jobs:
           GRADLE_DIR=$(find unpacked_project -name "settings.gradle*" -exec dirname {} \; | head -n 1)
           echo "Building in: $GRADLE_DIR"
           cd "$GRADLE_DIR"
-          gradle --no-daemon assembleDebug
+          if [ -f "./gradlew" ]; then
+            chmod +x ./gradlew
+            ./gradlew --no-daemon assembleDebug
+          else
+            gradle --no-daemon assembleDebug
+          fi
           mkdir -p "$GITHUB_WORKSPACE/output_apk"
           find . -name "*.apk" -exec cp {} "$GITHUB_WORKSPACE/output_apk/" \;
 
