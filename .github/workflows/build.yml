@@ -20,10 +20,11 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Unpack and patch Maven Mirror
+      - name: Unpack and patch project
         run: |
           unzip -o -q *.zip -d unpacked_project
           find unpacked_project \( -name "settings.gradle*" -o -name "build.gradle*" \) -exec sed -i 's|mavenCentral()|maven { url "https://googleapis.com" }|g' {} +
+          find unpacked_project -name "ic_launcher.png.png" -execdir mv {} ic_launcher.png \;
 
       - name: Build APK
         run: |
