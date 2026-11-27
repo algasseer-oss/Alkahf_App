@@ -20,6 +20,40 @@ jobs:
           distribution: temurin
           java-version: '17'
 
+      - name: Configure Maven Mirror
+        run: |
+          mkdir -p ~/.gradle
+          cat << 'EOF' > ~/.gradle/init.gradle
+          allprojects {
+              buildscript {
+                  repositories {
+                      all { ArtifactRepository repo ->
+                          if (repo instanceof MavenArtifactRepository) {
+                              def url = repo.url.toString()
+                              if (url.startsWith('https://apache.org') || url.startsWith('https://maven.org')) {
+                                  project.logger.lifecycle "Replacing Maven Central with Google Mirror"
+                                  remove repo
+                              }
+                          }
+                      }
+                      maven { url "https://googleapis.com" }
+                  }
+              }
+              repositories {
+                  all { ArtifactRepository repo ->
+                      if (repo instanceof MavenArtifactRepository) {
+                          def url = repo.url.toString()
+                          if (url.startsWith('https://apache.org') || url.startsWith('https://maven.org')) {
+                              project.logger.lifecycle "Replacing Maven Central with Google Mirror"
+                              remove repo
+                          }
+                      }
+                  }
+                  maven { url "https://googleapis.com" }
+              }
+          }
+          EOF
+
       - name: Unpack project
         run: |
           unzip -o -q *.zip -d unpacked_project
