@@ -28,7 +28,8 @@ jobs:
 
       - name: Unpack project
         run: |
-          unzip -o -q *.zip -d unpacked_project
+          ls -la
+          python3 -c "import zipfile, glob; z = glob.glob('*.zip')[0]; print('Unzipping:', z); zipfile.ZipFile(z).extractall('unpacked_project')"
           ls -la unpacked_project
 
       - name: Build APK
